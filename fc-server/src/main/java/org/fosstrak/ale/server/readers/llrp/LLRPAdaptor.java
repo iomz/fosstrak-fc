@@ -1,13 +1,16 @@
 package org.fosstrak.ale.server.readers.llrp;
 
 import java.rmi.RemoteException;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.epcglobalinc.tdt.LevelTypeList;
 import org.fosstrak.ale.exception.ImplementationException;
 import org.fosstrak.ale.server.ALEApplicationContext;
 import org.fosstrak.ale.server.Tag;
@@ -25,11 +28,14 @@ import org.llrp.ltk.generated.LLRPMessageFactory;
 import org.llrp.ltk.generated.enumerations.C1G2ReadResultType;
 import org.llrp.ltk.generated.enumerations.C1G2WriteResultType;
 import org.llrp.ltk.generated.interfaces.AccessCommandOpSpecResult;
+import org.llrp.ltk.generated.interfaces.AirProtocolTagData;
 import org.llrp.ltk.generated.interfaces.EPCParameter;
 import org.llrp.ltk.generated.messages.RO_ACCESS_REPORT;
 import org.llrp.ltk.generated.parameters.AntennaID;
 import org.llrp.ltk.generated.parameters.C1G2ReadOpSpecResult;
 import org.llrp.ltk.generated.parameters.C1G2WriteOpSpecResult;
+import org.llrp.ltk.generated.parameters.C1G2_CRC;
+import org.llrp.ltk.generated.parameters.C1G2_PC;
 import org.llrp.ltk.generated.parameters.EPC_96;
 import org.llrp.ltk.generated.parameters.TagReportData;
 import org.llrp.ltk.types.Integer96_HEX;
@@ -91,7 +97,7 @@ public class LLRPAdaptor extends BaseReader {
 	
 	/** ORANGE: the OpSpecID of the C1G2Read for the User Memory (MB=3).*/
 	/** Will be initialized by the value of UserMemoryC1G2ReadOpSpecId.*/
-	private static int userMemReadOpSpecID = -1;
+	private static int userMemReadOpSpecID = 9;
 	
 	/** ORANGE: the OpSpecID of the C1G2Write for the User Memory (MB=3).*/
 	/** Will be initialized by the value of UserMemoryC1G2WriteOpSpecId.*/
@@ -332,11 +338,33 @@ public class LLRPAdaptor extends BaseReader {
 							}
 						}
 					}
+					//
+					List<AirProtocolTagData> airProtoTagData = tagData.getAirProtocolTagDataList();
+					for (AirProtocolTagData aptd : airProtoTagData) {
+						if (aptd instanceof C1G2_CRC) {
+							C1G2_CRC c1g2_crc = (C1G2_CRC) aptd;
+							if ((null != c1g2_crc) && (null != c1g2_crc.getCRC())) {
+								log.debug("C1G2_CRC="+c1g2_crc.getCRC().toString());
+							}
+						} else if (aptd instanceof C1G2_PC) {
+							C1G2_PC c1g2_pc = (C1G2_PC) aptd;
+							if ((null != c1g2_pc) && (null != c1g2_pc.getPC_Bits())) {
+								log.debug("C1G2_PC="+c1g2_pc.getPC_Bits().toString());
+							}
+						} else {
+							log.error("Unknown AirProtocolTagData item encountered.");
+						}						
+					}
+					
+					
+					
+					//
 					EPCParameter epcParameter = tagData.getEPCParameter();
 					if ((include) && (epcParameter instanceof EPC_96)) {
 						EPC_96 epc96 = (EPC_96) epcParameter;
 						Integer96_HEX hex = epc96.getEPC();
 						String hx = hex.toString();
+						log.debug("hx first="+hx); 
 						Tag tag = null;
 						TDTEngine tdt = TagHelper.getTDTEngine();
 						try {
@@ -405,11 +433,18 @@ public class LLRPAdaptor extends BaseReader {
 //										tag.getTagAsBinary());
 								
 								//ORANGE : by this one more generic.
-								String pureID =	TagHelper.convert_to_PURE_IDENTITY(
-										tag.getTagLength(),
-										tag.getFilter(),
-										tag.getCompanyPrefixLength(),
-										tag.getTagAsBinary());	
+								//String pureID =	TagHelper.convert_to_PURE_IDENTITY(
+								//		tag.getTagLength(),
+								//		tag.getFilter(),
+								//		tag.getCompanyPrefixLength(),
+								//		tag.getTagAsBinary());
+								Map<String,String>params = new HashMap<String,String>();
+
+								params.put("taglength", "96");
+								log.debug("hx="+hx);
+								String pureID = TagHelper.getTDTEngine().convert(
+										TagHelper.getTDTEngine().hex2bin(hx), 
+										params, LevelTypeList.PURE_IDENTITY); 
 								//ORANGE End.
 							
 								tag.setTagIDAsPureURI(pureID);
