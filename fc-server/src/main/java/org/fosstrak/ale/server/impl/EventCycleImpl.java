@@ -329,7 +329,8 @@ public final class EventCycleImpl implements EventCycle, Runnable {
 	 */
 	private void logTagOnDebugEnabled(Tag tagToLog) {
 		if (LOG.isDebugEnabled()) {
-			LOG.debug("EventCycle '" + name + "' add Tag '" + tagToLog.getTagIDAsPureURI() + "'."); 
+			//LOG.debug("EventCycle '" + name + "' add Tag '" + tagToLog.getTagIDAsPureURI() + "'."); 
+			LOG.debug("EventCycle '" + name + "' add Tag '" + tagToLog.getTagID() + "'."); 
 		}
 	}
 

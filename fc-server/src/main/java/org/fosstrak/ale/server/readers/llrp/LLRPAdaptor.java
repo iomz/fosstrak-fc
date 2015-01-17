@@ -363,6 +363,7 @@ public class LLRPAdaptor extends BaseReader {
 					
 					
 					
+					
 					//
 					EPCParameter epcParameter = tagData.getEPCParameter();
 					if ((include) && (epcParameter instanceof EPC_96)) {
@@ -428,7 +429,8 @@ public class LLRPAdaptor extends BaseReader {
 						//ORANGE End	
 						
 						// try to run a conversion on the tag...
-						if (null != tag) {
+						//if (null != tag) {
+						if (tag.getNsi().equals("0")) {						
 							try {		
 								//ORANGE : replace the following code ...
 //								String pureID = Tag.convert_to_PURE_IDENTITY(
@@ -445,24 +447,25 @@ public class LLRPAdaptor extends BaseReader {
 								//		tag.getTagAsBinary());
 								Map<String,String>params = new HashMap<String,String>();
 
-								params.put("taglength", "96");
+								params.put("taglength", "96"); //tag.getTagLength()); 
 								log.debug("hx="+hx);
 								String pureID = TagHelper.getTDTEngine().convert(
 										TagHelper.getTDTEngine().hex2bin(hx), 
 										params, LevelTypeList.PURE_IDENTITY); 
 								//ORANGE End.
 							
-								tag.setTagIDAsPureURI(pureID);
+								   if (!pureID.isEmpty()) tag.setTagIDAsPureURI(pureID);
 							} catch (Exception e) {
 								log.debug("could not convert provided tag: " + e.getMessage());
 							}
 						}
 					}
 				}
+				// send the tags to fc
+				addTags(tags);
 			}
+
 			
-			// send the tags to fc
-			addTags(tags);
 		} catch (InvalidLLRPMessageException e) {
 			log.info("received invalid llrp message that could not be converted from binary");
 		}

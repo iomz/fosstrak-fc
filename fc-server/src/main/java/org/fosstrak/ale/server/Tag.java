@@ -188,6 +188,20 @@ public class Tag {
 	public String getOrigin() {
 		return origin;
 	}
+	/**
+	 * returns AFI
+	 * @return AFI
+	 */
+	public String getAfi(){
+	   return afi; 
+	}
+	/**
+	 * returns nsi
+	 * @return nsi
+	 */
+	public String getNsi(){
+	   return nsi; 
+	}
 	
 	/**
 	 * sets the origin  (baseReader) where the tag has been read.
