@@ -319,7 +319,9 @@ public class LLRPAdaptor extends BaseReader {
 		try {
 			List<Tag> tags = new LinkedList<Tag>();
 			LLRPMessage message = LLRPMessageFactory.createLLRPMessage(binaryMessage);
-			
+			C1G2_PC c1g2_pc = null; 
+			Tag tag = null; // 
+
 			if (message instanceof RO_ACCESS_REPORT) {
 				RO_ACCESS_REPORT report = (RO_ACCESS_REPORT)message;
 				List<TagReportData> tagDataList = report.getTagReportDataList();
@@ -339,6 +341,7 @@ public class LLRPAdaptor extends BaseReader {
 						}
 					}
 					//
+					tag = new Tag(readerName);
 					List<AirProtocolTagData> airProtoTagData = tagData.getAirProtocolTagDataList();
 					for (AirProtocolTagData aptd : airProtoTagData) {
 						if (aptd instanceof C1G2_CRC) {
@@ -347,9 +350,11 @@ public class LLRPAdaptor extends BaseReader {
 								log.debug("C1G2_CRC="+c1g2_crc.getCRC().toString());
 							}
 						} else if (aptd instanceof C1G2_PC) {
-							C1G2_PC c1g2_pc = (C1G2_PC) aptd;
+							c1g2_pc = (C1G2_PC) aptd;
 							if ((null != c1g2_pc) && (null != c1g2_pc.getPC_Bits())) {
 								log.debug("C1G2_PC="+c1g2_pc.getPC_Bits().toString());
+								tag.setNsiafi(c1g2_pc.getPC_Bits().toString());
+								tag.setTagLength();
 							}
 						} else {
 							log.error("Unknown AirProtocolTagData item encountered.");
@@ -365,7 +370,7 @@ public class LLRPAdaptor extends BaseReader {
 						Integer96_HEX hex = epc96.getEPC();
 						String hx = hex.toString();
 						log.debug("hx first="+hx); 
-						Tag tag = null;
+						//Tag tag = null;
 						TDTEngine tdt = TagHelper.getTDTEngine();
 						try {
 							String binary = tdt.hex2bin(hx);
@@ -375,7 +380,7 @@ public class LLRPAdaptor extends BaseReader {
 								binary = "00" + binary;
 							}
 							
-							tag = new Tag(readerName);
+	
 							tag.setTagAsBinary(binary);
 							tag.setTagID(binary.getBytes());
 							tag.setReader(readerName);
@@ -383,9 +388,9 @@ public class LLRPAdaptor extends BaseReader {
 							tag.setTimestamp(System.currentTimeMillis());
 
 							//ORANGE: add additional values if they exist
-							tag.setTagLength(length);
 							tag.setFilter(filter);
 							tag.setCompanyPrefixLength(companyPrefixLength);
+
 							//ORANGE End.
 
 							// add the tag.

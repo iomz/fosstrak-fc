@@ -47,6 +47,11 @@ public class Tag {
 	/** ORANGE: user memory of the tag. */
 	private String userMemory = null;
 	
+	/* JM : nsi and afi to differentiate ISO and GS1 tags */
+	private String nsi = null; 
+	private String afi = null; 
+	private int length; 
+	
 	/**
 	 * constructor for a tag. (default constructor).
 	 */
@@ -106,7 +111,18 @@ public class Tag {
 	public void setReader(String reader) {
 		this.reader = reader;
 	}
-
+	/**
+	 * sets afi and nsi from PC bits
+	 * @param afi and nsi
+	 */
+	public void setNsiafi(String c1g2pc) {
+		Integer pcint = new Integer(c1g2pc);
+		int pc = pcint.intValue();
+		this.nsi = String.valueOf((pc & 0x00000100) >> 8); 
+		this.afi = String.valueOf(pc & 0x000000ff); 
+	    this.length = ((pc & 0x0000f800) >> 11) * 16; 
+	    
+	}
 	/**
 	 * returns the id of this tag.
 	 * @return byte[] containing the tag id
@@ -290,6 +306,13 @@ public class Tag {
 	 */
 	public void setTagLength(String tagLength) {
 		this.tagLength = tagLength;
+	}
+	
+/**
+ * @param tagLength obtained from PC bits
+ */
+	public void setTagLength() {
+		this.tagLength = String.valueOf(length);
 	}
 
 	/**
