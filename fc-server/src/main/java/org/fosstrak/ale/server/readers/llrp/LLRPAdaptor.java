@@ -36,8 +36,12 @@ import org.llrp.ltk.generated.parameters.C1G2ReadOpSpecResult;
 import org.llrp.ltk.generated.parameters.C1G2WriteOpSpecResult;
 import org.llrp.ltk.generated.parameters.C1G2_CRC;
 import org.llrp.ltk.generated.parameters.C1G2_PC;
+import org.llrp.ltk.generated.parameters.EPCData;
 import org.llrp.ltk.generated.parameters.EPC_96;
+import org.llrp.ltk.generated.parameters.EPC_128;
 import org.llrp.ltk.generated.parameters.TagReportData;
+import org.llrp.ltk.types.BitArray_HEX;
+import org.llrp.ltk.types.Integer128_HEX;
 import org.llrp.ltk.types.Integer96_HEX;
 import org.llrp.ltk.types.LLRPMessage;
 import org.llrp.ltk.types.UnsignedShortArray_HEX;
@@ -366,11 +370,19 @@ public class LLRPAdaptor extends BaseReader {
 					
 					//
 					EPCParameter epcParameter = tagData.getEPCParameter();
-					if ((include) && (epcParameter instanceof EPC_96)) {
-						EPC_96 epc96 = (EPC_96) epcParameter;
-						Integer96_HEX hex = epc96.getEPC();
-						String hx = hex.toString();
-						log.debug("hx first="+hx); 
+					if (include & (epcParameter instanceof EPC_96 || epcParameter instanceof EPCData)){
+						String hx = null; 
+					    if ( epcParameter instanceof EPC_96) {
+						  EPC_96 epc96 = (EPC_96) epcParameter;
+						  Integer96_HEX hex = epc96.getEPC();
+						  hx = hex.toString(); 
+					    }
+					    else if(epcParameter instanceof EPCData){
+						  EPCData epc = (EPCData) epcParameter;
+						  BitArray_HEX hex = epc.getEPC();
+						  hx = hex.toString(); 
+					    }
+						//log.debug("hx first="+hx); 
 						//Tag tag = null;
 						TDTEngine tdt = TagHelper.getTDTEngine();
 						try {
@@ -429,8 +441,8 @@ public class LLRPAdaptor extends BaseReader {
 						//ORANGE End	
 						
 						// try to run a conversion on the tag...
-						//if (null != tag) {
-						if (tag.getNsi().equals("0")) {						
+						if (null != tag) {
+						//if (tag.getNsi().equals("0")) {						
 							try {		
 								//ORANGE : replace the following code ...
 //								String pureID = Tag.convert_to_PURE_IDENTITY(
@@ -447,14 +459,23 @@ public class LLRPAdaptor extends BaseReader {
 								//		tag.getTagAsBinary());
 								Map<String,String>params = new HashMap<String,String>();
 
-								params.put("taglength", "96"); //tag.getTagLength()); 
+
 								log.debug("hx="+hx);
-								String pureID = TagHelper.getTDTEngine().convert(
-										TagHelper.getTDTEngine().hex2bin(hx), 
-										params, LevelTypeList.PURE_IDENTITY); 
+								String pureID; 
+								//if (tag.getNsi().equals("0") & tag.getTagLength().equals("96")) {
+								//	params.put("taglength", "96"); //tag.getTagLength()); 
+								//	pureID = TagHelper.getTDTEngine().convert(
+								//		TagHelper.getTDTEngine().hex2bin(hx), 
+								//		params, LevelTypeList.PURE_IDENTITY); 
+								//	if (!pureID.isEmpty()) tag.setTagIDAsPureURI(pureID);
+							    //}
+								//else {
+							    pureID = TagHelper.getTDTEngine().convert(
+								         TagHelper.getTDTEngine().hex2bin(hx), hx, params, tag.getNsi(), 
+									     tag.getAfi(),tag.getTagLength(), LevelTypeList.PURE_IDENTITY);
+							    if (!pureID.isEmpty()) tag.setTagIDAsPureURI(pureID);
+								//}
 								//ORANGE End.
-							
-								   if (!pureID.isEmpty()) tag.setTagIDAsPureURI(pureID);
 							} catch (Exception e) {
 								log.debug("could not convert provided tag: " + e.getMessage());
 							}

@@ -242,6 +242,7 @@ public final class TagHelper {
 				LOG.debug("Initialize TDT Engine for tag translation.");
 				URL auxiliary = TagHelper.class.getClassLoader().getResource("auxiliary/ManagerTranslation.xml");
 				URL schemes = TagHelper.class.getClassLoader().getResource("tmpschemes/");
+				//URL isoafis = TagHelper.class.getClassLoader().getResource("auxiliary/Isoafis.xml");
 				engine = new TDTEngine(auxiliary, schemes);
 			} catch (Exception e) {
 				LOG.error("could not create an instance of the TDT Engine - aborting: ", e);

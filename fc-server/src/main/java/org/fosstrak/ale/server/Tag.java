@@ -50,6 +50,8 @@ public class Tag {
 	/* JM : nsi and afi to differentiate ISO and GS1 tags */
 	private String nsi = null; 
 	private String afi = null; 
+	private String umi = null; 
+	private String xi = null; 
 	private int length; 
 	
 	/**
@@ -120,6 +122,8 @@ public class Tag {
 		int pc = pcint.intValue();
 		this.nsi = String.valueOf((pc & 0x00000100) >> 8); 
 		this.afi = String.valueOf(pc & 0x000000ff); 
+		this.umi = String.valueOf(pc & 0x00000400); 
+		this.xi = String.valueOf(pc & 0x00000200); 
 	    this.length = ((pc & 0x0000f800) >> 11) * 16; 
 	    
 	}
@@ -201,6 +205,20 @@ public class Tag {
 	 */
 	public String getNsi(){
 	   return nsi; 
+	}
+	/**
+	 * returns umi
+	 * @return umi
+	 */
+	public String getUmi(){
+	   return umi; 
+	}
+	/**
+	 * returns xi
+	 * @return xi
+	 */
+	public String getXi(){
+	   return xi; 
 	}
 	
 	/**
