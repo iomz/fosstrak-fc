@@ -473,10 +473,15 @@ public class LLRPAdaptor extends BaseReader {
 							    pureID = TagHelper.getTDTEngine().convert(
 								         TagHelper.getTDTEngine().hex2bin(hx), hx, params, tag.getNsi(), 
 									     tag.getAfi(),tag.getTagLength(), LevelTypeList.PURE_IDENTITY);
+						    	 log.debug("before pureid="+pureID);
 							    if (!pureID.isEmpty()) {
 							    	 log.debug("pureid="+pureID);
 							         tag.setTagIDAsPureURI(pureID);
 							    }   
+							    else {
+							    	log.debug("urn:prop-"+tag.getTagLength()+"x"+hx); 
+							    	tag.setTagIDAsPureURI("urn:prp-"+tag.getTagLength()+"x"+hx);
+							    }
 								//}
 								//ORANGE End.
 							} catch (Exception e) {
