@@ -72,7 +72,7 @@ public final class EventCycleImpl implements EventCycle, Runnable {
 	private static final Random rand = new Random(System.currentTimeMillis());
 	
 	/** ale id. */
-	private static final String ALEID = "ETHZ-ALE" + rand.nextInt();
+	private static final String ALEID = "KEIO/ETHZ-mALE" + rand.nextInt();
 	
 	/** number of this event cycle. */
 	private static int number = 0;

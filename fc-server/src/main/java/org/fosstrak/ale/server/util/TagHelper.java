@@ -179,6 +179,14 @@ public final class TagHelper {
 		}
 		return null;
 	}
+	public static String addTagAsRawHex(ECReportGroupListMember groupMember, Tag tag) {
+	EPC epc = new EPC();
+	final String converted = String.valueOf(tag.getTagID()); 
+	epc.setValue(converted);
+	groupMember.setRawHex(epc);	
+	return converted;
+	}
+
 
 	/**
 	 * determine if a tag is to be included into the output in the format EPC.

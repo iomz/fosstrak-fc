@@ -443,7 +443,7 @@ public class Report {
 			TagHelper.addTagAsRawDecimal(tdt, groupMember, tag);
 		}
 		// TAG ENCODING
-		if (TagHelper.isReportOutputSpecIncludeTagEncoding(reportSpec.getOutput())) {
+		if (TagHelper.isReportOutputSpecIncludeTagEncoding(reportSpec.getOutput()) & tag.getTagIDAsPureURI().contains("epc")) {
 			TagHelper.addTagAsTagEncoding(tdt, groupMember, tag);
 		}
 		// RAW HEX
