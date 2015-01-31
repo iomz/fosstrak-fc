@@ -221,6 +221,14 @@ public final class TagHelper {
 		groupMember.setEpc(epc);		
 		return tag.getTagIDAsPureURI();
 	}
+	public static String addTagAsEPC(ECReportGroupListMember groupMember, Tag tag) {
+		LOG.debug("instead setting tag as pure URI");
+		// TODO: check with the EPC/ALE Specification if this is correct.
+		EPC epc = new EPC();
+		epc.setValue(tag.getTagIDAsPureURI());
+		groupMember.setEpc(epc);		
+		return tag.getTagIDAsPureURI();
+	}
 	
 	//---------------------------------- TAG CONVERSION -----------------------------------------------
 

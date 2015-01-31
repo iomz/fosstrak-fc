@@ -452,7 +452,7 @@ public class Report {
 		}
 		// EPC
 		if (TagHelper.isReportOutputSpecIncludeEPC(reportSpec.getOutput())) {
-			TagHelper.addTagAsEPC(tdt, groupMember, tag);
+			TagHelper.addTagAsEPC(groupMember, tag);
 		}
 		
 		// check if we need to add tag stats

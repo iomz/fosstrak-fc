@@ -480,7 +480,7 @@ public class LLRPAdaptor extends BaseReader {
 							    }   
 							    else {
 							    	log.debug("urn:prop-"+tag.getTagLength()+"x"+hx); 
-							    	tag.setTagIDAsPureURI("urn:prp-"+tag.getTagLength()+"x"+hx);
+							    	tag.setTagIDAsPureURI("urn:prop:"+tag.getTagLength()+"x"+hx);
 							    }
 								//}
 								//ORANGE End.

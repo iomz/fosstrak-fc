@@ -36,16 +36,18 @@ public class Pattern {
 	/** content of the first field */
 	private static final String FIRST_FIELD = "urn";
 	/** content of the second field */
-	private static final String SECOND_FIELD = "epc";
+	private static final String[] SECOND_FIELD = new String[] {"epc", "oid", "prop"};
 	/** possible contents of the third field */
 	private static final String[] THIRD_FIELDS = new String[] {"urn", "tag", "pat", "id", "idpat", "raw"};
+	private static final String[] ISOs = new String[]{"1.0.17363", "1.0.17365"};
+	private static final String OID = "oid";
 	
 	/** how this pattern is used (tag, filter or group) */
 	private final PatternUsage usage;
 	/** conent of third field */
-	private final String thirdField;
+	private String thirdField;
 	/** type of this pattern */
-	private final PatternType type;
+	private PatternType type;
 	
 	/** data fields of this pattern */
 	private final List<PatternDataField> dataFields = new ArrayList<PatternDataField>();
@@ -58,7 +60,6 @@ public class Pattern {
 	 * @throws ECSpecValidationException if the pattern is invalid
 	 */
 	public Pattern(String pattern, PatternUsage usage) throws ECSpecValidationException {
-
 		// set fields
 		this.usage = usage;
 		
@@ -69,24 +70,42 @@ public class Pattern {
 			thirdFieldString.append(THIRD_FIELDS[i]);
 		}
 		thirdFieldString.append(")");
+		StringBuffer secondFieldString = new StringBuffer();
+		secondFieldString.append("(");
+		for (int i = 0; i < SECOND_FIELD.length; i++) {
+			if (i > 0) secondFieldString.append(" | ");
+			secondFieldString.append(SECOND_FIELD[i]);
+		}
+		secondFieldString.append(")");
 		
 		// split pattern and check first fields
 		String[] parts = pattern.split(":");
-		if (parts.length != 5) {
+		if (parts[1]=="epc" & parts.length != 5) {
 			throw new ECSpecValidationException("Invalid Pattern '" + pattern + "'." +
-					" Pattern must have the form '" + FIRST_FIELD + ":" + SECOND_FIELD + ":" + thirdFieldString + ":tag-type:data-fields'.");
+					" Pattern must have the form '" + FIRST_FIELD + ":" + secondFieldString + ":" + thirdFieldString + ":tag-type:data-fields'.");
 		} else {
 			thirdField = parts[2];
-			if (!FIRST_FIELD.equals(parts[0]) || !SECOND_FIELD.equals(parts[1]) || !containsString(THIRD_FIELDS, thirdField)) {
+//			if (!FIRST_FIELD.equals(parts[0]) || !SECOND_FIELD.equals(parts[1]) || !containsString(THIRD_FIELDS, thirdField)) {
+			//if (!FIRST_FIELD.equals(parts[0]) || !containsString(SECOND_FIELD,parts[1]) || !containsString(THIRD_FIELDS, thirdField)) {
+		    if (!FIRST_FIELD.equals(parts[0]) || !containsString(SECOND_FIELD,parts[1]) ) {
 				throw new ECSpecValidationException("Invalid Pattern '" + pattern + "'." +
-						" Pattern must start with '" + FIRST_FIELD + ":" + SECOND_FIELD + ":" + thirdFieldString + "'.");
+						" Pattern must start with '" + FIRST_FIELD + ":" + secondFieldString + ":" + thirdFieldString + "'.");
 			} else {
 				
 				// get pattern type
-				type = PatternType.getType(parts[3]);
+				if (OID.equals(parts[1])) {
+					type = PatternType.getType(parts[1]);
+					//parseDataFields(parts[3],pattern); 
+				}
+				else if (parts[1].equals("epc")) {
+					type = PatternType.getType(parts[3]);
+					parseDataFields(parts[4],pattern); 
+				}
+				else if (parts[1].equals("prop")) type = PatternType.getType(parts[1]);
+				
 				
 				// parse data fields
-				parseDataFields(parts[4], pattern);
+				//parseDataFields(parts[4], pattern);
 				
 			}
 		}

@@ -37,15 +37,22 @@ public enum PatternType {
 	SSCC_64,
 	SGTIN_96,
 	SSCC_96,
-	GRAI_96;	
+	GRAI_96,
+	SGTIN,
+	SSCC,
+	OID,
+	PROP;
 
-	
 	private static final String GID_96_STRING = "gid-96";
 	private static final String SGTIN_64_STRING = "sgtin-64";
 	private static final String SSCC_64_STRING = "sscc-64";
 	private static final String SGTIN_96_STRING = "sgtin-96";
 	private static final String SSCC_96_STRING = "sscc-96";
 	private static final String GRAI_96_STRING = "grai-96";
+	private static final String SGTIN_STRING = "sgtin";
+	private static final String SSCC_STRING = "sscc";
+	private static final String OID_STRING = "oid";
+	private static final String PROP_STRING = "prop";
 	
 	private static final int GID_96_DATAFIELDS = 3;
 	private static final int SGTIN_64_DATAFIELDS = 4;
@@ -53,6 +60,10 @@ public enum PatternType {
 	private static final int SGTIN_96_DATAFIELDS = 4;
 	private static final int SSCC_96_DATAFIELDS = 3;
 	private static final int GRAI_96_DATAFIELDS = 3;
+	private static final int SGTIN_DATAFIELDS = 3;
+	private static final int SSCC_DATAFIELDS = 3;
+	private static final int OID_DATAFIELDS = 1;
+	private static final int PROP_DATAFIELDS = 1;
 	
 	
 	/**
@@ -76,6 +87,16 @@ public enum PatternType {
 			return SSCC_96;
 		}else if (GRAI_96_STRING.equals(type)){
 			return GRAI_96;
+		}else if (GRAI_96_STRING.equals(type)){
+			return GRAI_96;
+		}else if (SGTIN_STRING.equals(type)){
+			return SGTIN;
+		}else if (SSCC_STRING.equals(type)){
+			return SSCC;
+		}else if (OID_STRING.equals(type)){
+				return OID;
+		}else if (PROP_STRING.equals(type)){
+			return PROP;
 		}else {
 			throw new ECSpecValidationException("Unknown Tag Format '" + type + "'. Known formats are" +
 					" '" + GID_96_STRING + "', '" + SGTIN_64_STRING + "', '" + SGTIN_96_STRING + "' and '" + SSCC_64_STRING + "', '" + SSCC_96_STRING + "', '" + GRAI_96_STRING + "'.");
@@ -102,6 +123,14 @@ public enum PatternType {
 			return SSCC_96_DATAFIELDS;
 		}else if (this == GRAI_96) {
 			return GRAI_96_DATAFIELDS;
+		}else if (this == SGTIN) {
+			return SGTIN_DATAFIELDS;
+		}else if (this == SSCC) {
+			return SSCC_DATAFIELDS;
+		}else if (this == OID) {
+			return OID_DATAFIELDS;
+		}else if (this == PROP) {
+			return PROP_DATAFIELDS;
 		}else {
 			return -1;
 		}
@@ -132,5 +161,5 @@ public enum PatternType {
 		}
 		
 	}
-	
+
 }
