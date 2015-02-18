@@ -61,7 +61,7 @@ public enum PatternType {
 	private static final int SSCC_96_DATAFIELDS = 3;
 	private static final int GRAI_96_DATAFIELDS = 3;
 	private static final int SGTIN_DATAFIELDS = 3;
-	private static final int SSCC_DATAFIELDS = 3;
+	private static final int SSCC_DATAFIELDS = 2;
 	private static final int OID_DATAFIELDS = 1;
 	private static final int PROP_DATAFIELDS = 1;
 	
