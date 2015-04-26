@@ -26,35 +26,48 @@ import org.junit.Test;
 
 /**
  * test the correct behaviour of the enumeration.
+ * 
  * @author swieland
  *
  */
 public class ECReportSetEnumTest {
-	
+
 	@Test
 	public void isSameECReportSet() {
-		Assert.assertTrue(ECReportSetEnum.ADDITIONS.equals(ECReportSetEnum.valueOf("ADDITIONS")));
-		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(ECReportSetEnum.ADDITIONS, "ADDITIONS"));
-		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(ECReportSetEnum.ADDITIONS, "additions"));
-		
-		Assert.assertTrue(ECReportSetEnum.CURRENT.equals(ECReportSetEnum.valueOf("CURRENT")));
-		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(ECReportSetEnum.CURRENT, "CURRENT"));
-		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(ECReportSetEnum.CURRENT, "current"));
-		
-		Assert.assertTrue(ECReportSetEnum.DELETIONS.equals(ECReportSetEnum.valueOf("DELETIONS")));
-		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(ECReportSetEnum.DELETIONS, "DELETIONS"));
-		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(ECReportSetEnum.DELETIONS, "deletions"));
-		
-		Assert.assertFalse(ECReportSetEnum.DELETIONS.equals(ECReportSetEnum.valueOf("ADDITIONS")));
+		Assert.assertTrue(ECReportSetEnum.ADDITIONS.equals(ECReportSetEnum
+				.valueOf("ADDITIONS")));
+		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(
+				ECReportSetEnum.ADDITIONS, "ADDITIONS"));
+		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(
+				ECReportSetEnum.ADDITIONS, "additions"));
+
+		Assert.assertTrue(ECReportSetEnum.CURRENT.equals(ECReportSetEnum
+				.valueOf("CURRENT")));
+		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(
+				ECReportSetEnum.CURRENT, "CURRENT"));
+		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(
+				ECReportSetEnum.CURRENT, "current"));
+
+		Assert.assertTrue(ECReportSetEnum.DELETIONS.equals(ECReportSetEnum
+				.valueOf("DELETIONS")));
+		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(
+				ECReportSetEnum.DELETIONS, "DELETIONS"));
+		Assert.assertTrue(ECReportSetEnum.isSameECReportSet(
+				ECReportSetEnum.DELETIONS, "deletions"));
+
+		Assert.assertFalse(ECReportSetEnum.DELETIONS.equals(ECReportSetEnum
+				.valueOf("ADDITIONS")));
 	}
-	
+
 	@Test
 	public void testNullValue() {
-		Assert.assertFalse(ECReportSetEnum.isSameECReportSet(ECReportSetEnum.DELETIONS, null));
+		Assert.assertFalse(ECReportSetEnum.isSameECReportSet(
+				ECReportSetEnum.DELETIONS, null));
 	}
-	
+
 	@Test
 	public void testUnknow() {
-		Assert.assertFalse(ECReportSetEnum.isSameECReportSet(ECReportSetEnum.DELETIONS, "test"));
+		Assert.assertFalse(ECReportSetEnum.isSameECReportSet(
+				ECReportSetEnum.DELETIONS, "test"));
 	}
 }

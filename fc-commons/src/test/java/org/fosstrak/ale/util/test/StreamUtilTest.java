@@ -31,23 +31,25 @@ import org.junit.Test;
 
 /**
  * test to assert the stream utils.
+ * 
  * @author swieland
  *
  */
 public class StreamUtilTest {
-	
+
 	@Test
 	public void testStream2StringNull() throws Exception {
 		Assert.assertNull(StreamUtil.inputStream2String(null));
-		
+
 		InputStream in = EasyMock.createMock(InputStream.class);
-		EasyMock.expect(in.available()).andThrow(new IOException("Mock exception."));
+		EasyMock.expect(in.available()).andThrow(
+				new IOException("Mock exception."));
 		EasyMock.replay(in);
-		
+
 		Assert.assertNull(StreamUtil.inputStream2String(in));
 		EasyMock.verify(in);
 	}
-	
+
 	@Test
 	public void testStream2String() throws Exception {
 		ByteArrayInputStream bin = new ByteArrayInputStream("hello".getBytes());

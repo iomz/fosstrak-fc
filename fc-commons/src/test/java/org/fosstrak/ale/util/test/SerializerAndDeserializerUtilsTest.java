@@ -59,10 +59,10 @@ import org.fosstrak.ale.xsd.ale.epcglobal.LRSpec;
 import org.junit.Test;
 
 /**
- * @author swieland 
- * Test the serializer and deserializer utils. The tests only test the serializer and 
- * the deserializer algorithm (writing to and reading from JAXB) but not the JAXB serializer 
- * itself (we safely assume it to work correctly :-) ).
+ * @author swieland Test the serializer and deserializer utils. The tests only
+ *         test the serializer and the deserializer algorithm (writing to and
+ *         reading from JAXB) but not the JAXB serializer itself (we safely
+ *         assume it to work correctly :-) ).
  */
 public class SerializerAndDeserializerUtilsTest {
 
@@ -72,13 +72,13 @@ public class SerializerAndDeserializerUtilsTest {
 
 	private static final String START_TRIGGER = "startTrigger";
 	private static final String STOP_TRIGGER = "stopTrigger";
-	
+
 	private static final String FILTER_SPEC_EXCLUDE_PATTERN = "filterSpecExcludePattern";
 	private static final String FILTER_SPEC_INCLUDE_PATTERN = "filterSpecIncludePattern";
 	private static final String GROUP_SPEC_PATTERN = "groupSpecPattern";
 	private static final String REPORT_NAME = "reportName";
 	private static final String REPORT_SET = "reportSet";
-	
+
 	private static final String READER_NAME = "readerName";
 	private static final String ADD_READER_NAME = "addReaderName";
 	private static final String SET_READER_NAME = "setReaderName";
@@ -87,16 +87,15 @@ public class SerializerAndDeserializerUtilsTest {
 
 	private static final String SET_PROPERTY_NAMEVALUE_NAME = "setPropertyName";
 	private static final String SET_PROPERTY_NAMEVALUE_VALUE = "setPropertyValue";
-	
+
 	private static final String ALE_ID = "aleID";
-	
-	private static final long TOTAL_MS = 2000L; 
+
+	private static final long TOTAL_MS = 2000L;
 	private static final String TERMINATION_TRIGGER = "terminationTrigger";
 	private static final String TERMINATION_CONDITION = "terminationCondition";
 	private static final String INITIATION_TRIGGER = "initiationTrigger";
 	private static final String INITIATION_CONDITION = "initiationCondition";
 	private static final String REPORT_SPEC_NAME = "reportSpecName";
-	
 
 	@Test
 	public void testSerializeECSpec() throws Exception {
@@ -104,33 +103,38 @@ public class SerializerAndDeserializerUtilsTest {
 		CharArrayWriter writer = new CharArrayWriter();
 		SerializerUtil.serializeECSpec(ecSpec, writer);
 		String str = writer.toString();
-		ECSpec ecSpec2 = DeserializerUtil.deserializeECSpec(new ByteArrayInputStream(str.getBytes()));
+		ECSpec ecSpec2 = DeserializerUtil
+				.deserializeECSpec(new ByteArrayInputStream(str.getBytes()));
 		ensureSame(ecSpec, ecSpec2);
 	}
-	
+
 	@Test
 	public void testSerializeECSpecWithOutputStream() throws Exception {
 		ECSpec ecSpec = createDummyECSpec();
 		ByteArrayOutputStream bous = new ByteArrayOutputStream();
 		SerializerUtil.serializeECSpec(ecSpec, bous);
 		String str = bous.toString();
-		ECSpec ecSpec2 = DeserializerUtil.deserializeECSpec(new ByteArrayInputStream(str.getBytes()));
+		ECSpec ecSpec2 = DeserializerUtil
+				.deserializeECSpec(new ByteArrayInputStream(str.getBytes()));
 		ensureSame(ecSpec, ecSpec2);
-	}	
-	
+	}
+
 	@Test
 	public void testSerializeECSpecPretty() throws Exception {
 		ECSpec ecSpec = createDummyECSpec();
 		ByteArrayOutputStream bous = new ByteArrayOutputStream();
 		SerializerUtil.serializeECSpecPretty(ecSpec, bous);
 		String str = bous.toString();
-		ECSpec ecSpec2 = DeserializerUtil.deserializeECSpec(new ByteArrayInputStream(str.getBytes()));
+		ECSpec ecSpec2 = DeserializerUtil
+				.deserializeECSpec(new ByteArrayInputStream(str.getBytes()));
 		ensureSame(ecSpec, ecSpec2);
 	}
-	
+
 	/**
 	 * test the deserialization of the ECSpec from File.
-	 * @throws Exception test failure.
+	 * 
+	 * @throws Exception
+	 *             test failure.
 	 */
 	@Test
 	public void testDeserializeECSpec() throws Exception {
@@ -139,9 +143,10 @@ public class SerializerAndDeserializerUtilsTest {
 		FileOutputStream fof = new FileOutputStream(f);
 		SerializerUtil.serializeECSpec(ecSpec, fof);
 		fof.close();
-		
-		ECSpec deserialized = DeserializerUtil.deserializeECSpec(f.getAbsolutePath());
-		ensureSame(ecSpec, deserialized);		
+
+		ECSpec deserialized = DeserializerUtil.deserializeECSpec(f
+				.getAbsolutePath());
+		ensureSame(ecSpec, deserialized);
 	}
 
 	@Test
@@ -150,7 +155,8 @@ public class SerializerAndDeserializerUtilsTest {
 		CharArrayWriter writer = new CharArrayWriter();
 		SerializerUtil.serializeECReports(ecReports, writer);
 		String str = writer.toString();
-		ECReports ecReports2 = DeserializerUtil.deserializeECReports(new ByteArrayInputStream(str.getBytes()));
+		ECReports ecReports2 = DeserializerUtil
+				.deserializeECReports(new ByteArrayInputStream(str.getBytes()));
 		ensureSame(ecReports, ecReports2);
 	}
 
@@ -160,17 +166,19 @@ public class SerializerAndDeserializerUtilsTest {
 		CharArrayWriter writer = new CharArrayWriter();
 		SerializerUtil.serializeECReportsPretty(ecReports, writer);
 		String str = writer.toString();
-		ECReports ecReports2 = DeserializerUtil.deserializeECReports(new ByteArrayInputStream(str.getBytes()));
+		ECReports ecReports2 = DeserializerUtil
+				.deserializeECReports(new ByteArrayInputStream(str.getBytes()));
 		ensureSame(ecReports, ecReports2);
 	}
-	
+
 	@Test
 	public void testSerializeLRSpec() throws Exception {
 		LRSpec lrSpec = createDummyLRSpec();
 		CharArrayWriter writer = new CharArrayWriter();
 		SerializerUtil.serializeLRSpec(lrSpec, writer);
 		String str = writer.toString();
-		LRSpec lrSpec2 = DeserializerUtil.deserializeLRSpec(new ByteArrayInputStream(str.getBytes()));
+		LRSpec lrSpec2 = DeserializerUtil
+				.deserializeLRSpec(new ByteArrayInputStream(str.getBytes()));
 		ensureSame(lrSpec, lrSpec2);
 	}
 
@@ -179,7 +187,8 @@ public class SerializerAndDeserializerUtilsTest {
 		String fn = createTemporaryFileName();
 		SetProperties setProperties = createDummySetProperties();
 		SerializerUtil.serializeSetProperties(setProperties, fn);
-		SetProperties setProperties2 = DeserializerUtil.deserializeSetProperties(fn);
+		SetProperties setProperties2 = DeserializerUtil
+				.deserializeSetProperties(fn);
 		ensureSame(setProperties, setProperties2);
 	}
 
@@ -188,7 +197,8 @@ public class SerializerAndDeserializerUtilsTest {
 		String fn = createTemporaryFileName();
 		RemoveReaders removeReaders = createDummyRemoveReaders();
 		SerializerUtil.serializeRemoveReaders(removeReaders, fn);
-		RemoveReaders removeReaders2 = DeserializerUtil.deserializeRemoveReaders(fn);
+		RemoveReaders removeReaders2 = DeserializerUtil
+				.deserializeRemoveReaders(fn);
 		ensureSame(removeReaders, removeReaders2);
 	}
 
@@ -209,15 +219,17 @@ public class SerializerAndDeserializerUtilsTest {
 		AddReaders addReaders2 = DeserializerUtil.deserializeAddReaders(fn);
 		ensureSame(addReaders, addReaders2);
 	}
-	
+
 	private String createTemporaryFileName() {
 		String tempdir = System.getProperty("java.io.tmpdir");
 
 		if (!(tempdir.endsWith("/") || tempdir.endsWith("\\"))) {
-		   tempdir = tempdir + System.getProperty("file.separator");
+			tempdir = tempdir + System.getProperty("file.separator");
 		}
-		
-		return tempdir + String.format("aleSerializerTest_%d.temp", System.currentTimeMillis());
+
+		return tempdir
+				+ String.format("aleSerializerTest_%d.temp",
+						System.currentTimeMillis());
 	}
 
 	public SetProperties createDummySetProperties() {
@@ -237,7 +249,7 @@ public class SerializerAndDeserializerUtilsTest {
 		RemoveReaders.Readers readers = new RemoveReaders.Readers();
 		readers.getReader().add(READER_NAME);
 		removeReaders.setName(REMOVE_READER_NAME);
-		removeReaders.setReaders(readers);		
+		removeReaders.setReaders(readers);
 		return removeReaders;
 	}
 
@@ -246,7 +258,7 @@ public class SerializerAndDeserializerUtilsTest {
 		SetReaders.Readers readers = new SetReaders.Readers();
 		readers.getReader().add(READER_NAME);
 		setReaders.setName(SET_READER_NAME);
-		setReaders.setReaders(readers);		
+		setReaders.setReaders(readers);
 		return setReaders;
 	}
 
@@ -288,7 +300,8 @@ public class SerializerAndDeserializerUtilsTest {
 	}
 
 	public XMLGregorianCalendar createDummyCalendar() throws Exception {
-		return DatatypeFactory.newInstance().newXMLGregorianCalendar(new GregorianCalendar(2000, 10, 10));
+		return DatatypeFactory.newInstance().newXMLGregorianCalendar(
+				new GregorianCalendar(2000, 10, 10));
 	}
 
 	public LogicalReaders createDummyLogicalReaders(String[] readers) {
@@ -307,20 +320,20 @@ public class SerializerAndDeserializerUtilsTest {
 		ECFilterSpec filterSpec = new ECFilterSpec();
 		filterSpec.setExcludePatterns(excludePatterns);
 		filterSpec.setIncludePatterns(includePatterns);
-		
+
 		ECGroupSpec groupSpec = new ECGroupSpec();
 		groupSpec.getPattern().add(GROUP_SPEC_PATTERN);
-		
+
 		ECReportOutputSpec outputSpec = new ECReportOutputSpec();
 		outputSpec.setIncludeCount(true);
 		outputSpec.setIncludeEPC(true);
 		outputSpec.setIncludeRawDecimal(true);
 		outputSpec.setIncludeRawHex(true);
 		outputSpec.setIncludeTag(true);
-		
+
 		ECReportSetSpec reportSet = new ECReportSetSpec();
 		reportSet.setSet(REPORT_SET);
-		
+
 		ECReportSpec reportSpec = new ECReportSpec();
 		reportSpec.setFilterSpec(filterSpec);
 		reportSpec.setGroupSpec(groupSpec);
@@ -329,13 +342,13 @@ public class SerializerAndDeserializerUtilsTest {
 		reportSpec.setReportName(REPORT_NAME);
 		reportSpec.setReportOnlyOnChange(true);
 		reportSpec.setReportSet(reportSet);
-		
-		ReportSpecs specs = new ReportSpecs();		
+
+		ReportSpecs specs = new ReportSpecs();
 		specs.getReportSpec().add(reportSpec);
 		return specs;
 	}
-	
-	public ECReports createDummyECReports() throws Exception  {
+
+	public ECReports createDummyECReports() throws Exception {
 		ECReports reports = new ECReports();
 		reports.setALEID(ALE_ID);
 		reports.setCreationDate(createDummyCalendar());
@@ -350,7 +363,7 @@ public class SerializerAndDeserializerUtilsTest {
 		reports.setTotalMilliseconds(TOTAL_MS);
 		return reports;
 	}
-	
+
 	public Reports createDummyReports() {
 		Reports reports = new Reports();
 		reports.getReport().add(createDummyECReport());
@@ -363,13 +376,13 @@ public class SerializerAndDeserializerUtilsTest {
 		report.getGroup().add(createDummyECReportGroup());
 		return report;
 	}
-	
+
 	public ECReportGroup createDummyECReportGroup() {
 		ECReportGroup group = new ECReportGroup();
 		return group;
 	}
 
-	public LRSpec createDummyLRSpec() throws Exception  {
+	public LRSpec createDummyLRSpec() throws Exception {
 		LRSpec lrSpec = new LRSpec();
 		lrSpec.setCreationDate(createDummyCalendar());
 		lrSpec.setIsComposite(false);
@@ -385,48 +398,48 @@ public class SerializerAndDeserializerUtilsTest {
 		lrSpec.setReaders(readers);
 		return lrSpec;
 	}
-	
-
-
-	
-
-
-	
 
 	private void ensureSame(SetProperties expected, SetProperties actual) {
 		Assert.assertNotNull(actual);
 		Assert.assertEquals(expected.getName(), actual.getName());
 		Assert.assertNotNull(actual.getProperties());
-		Assert.assertEquals(expected.getProperties().getProperty().size(), actual.getProperties().getProperty().size());
+		Assert.assertEquals(expected.getProperties().getProperty().size(),
+				actual.getProperties().getProperty().size());
 	}
 
 	private void ensureSame(RemoveReaders expected, RemoveReaders actual) {
 		Assert.assertNotNull(actual);
 		Assert.assertEquals(expected.getName(), actual.getName());
 		Assert.assertNotNull(actual.getReaders());
-		Assert.assertEquals(expected.getReaders().getReader().size(), actual.getReaders().getReader().size());
+		Assert.assertEquals(expected.getReaders().getReader().size(), actual
+				.getReaders().getReader().size());
 	}
 
 	private void ensureSame(SetReaders expected, SetReaders actual) {
 		Assert.assertNotNull(actual);
 		Assert.assertEquals(expected.getName(), actual.getName());
 		Assert.assertNotNull(actual.getReaders());
-		Assert.assertEquals(expected.getReaders().getReader().size(), actual.getReaders().getReader().size());
+		Assert.assertEquals(expected.getReaders().getReader().size(), actual
+				.getReaders().getReader().size());
 	}
 
 	private void ensureSame(AddReaders expected, AddReaders actual) {
 		Assert.assertNotNull(actual);
 		Assert.assertEquals(expected.getName(), actual.getName());
 		Assert.assertNotNull(actual.getReaders());
-		Assert.assertEquals(expected.getReaders().getReader().size(), actual.getReaders().getReader().size());
+		Assert.assertEquals(expected.getReaders().getReader().size(), actual
+				.getReaders().getReader().size());
 	}
 
 	private void ensureSame(ECSpec expected, ECSpec actual) {
 		Assert.assertNotNull(actual);
 		Assert.assertNotNull(actual.getCreationDate());
-		Assert.assertEquals(expected.getCreationDate().getDay(), actual.getCreationDate().getDay());
-		Assert.assertEquals(expected.getCreationDate().getMonth(), actual.getCreationDate().getMonth());
-		Assert.assertEquals(expected.getCreationDate().getYear(), actual.getCreationDate().getYear());		
+		Assert.assertEquals(expected.getCreationDate().getDay(), actual
+				.getCreationDate().getDay());
+		Assert.assertEquals(expected.getCreationDate().getMonth(), actual
+				.getCreationDate().getMonth());
+		Assert.assertEquals(expected.getCreationDate().getYear(), actual
+				.getCreationDate().getYear());
 	}
 
 	private void ensureSame(ECReports expected, ECReports actual) {
@@ -434,6 +447,6 @@ public class SerializerAndDeserializerUtilsTest {
 	}
 
 	private void ensureSame(LRSpec expected, LRSpec actual) {
-		Assert.assertNotNull(actual);		
+		Assert.assertNotNull(actual);
 	}
 }
