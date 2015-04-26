@@ -57,100 +57,146 @@ import org.junit.Test;
  * <li>wait for the cycle to go through and obtain the reports</li>
  * <li>check the report contains the given tags</li>
  * </ol>
+ * 
  * @author swieland
  *
  */
 public class EventCycleTest {
 
-								        
 	private final String TAG1_BINARY = "001100000111010000000010010000100010000000011101100010000100000000000000000011111110011000110010";
-	private final String TAG1_PURE_URI = "urn:epc:tag:sgtin-96:3.0037000.030241.1041970";	
-	
+	private final String TAG1_PURE_URI = "urn:epc:tag:sgtin-96:3.0037000.030241.1041970";
+
 	private final String TAG2_BINARY = "001100000010001110010110110100010010101001000111010100001001010010100000100000001010110100111011";
 	private final String TAG2_PURE_URI = "urn:epc:tag:sgtin-96:1.986572296660.2.88592133435";
-	
+
 	private final String TAG3_BINARY = "001100000011100110110100111011000100110010011100001110000111001000001011010101011110101100111111";
 	private final String TAG3_PURE_URI = "urn:epc:tag:sgtin-96:1.447409.3305697.214938544959";
-	
-//	@Ignore
+
+	// @Ignore
 	@Test
 	public void testPrintHex() throws Exception {
-		URL auxiliary = TagHelper.class.getClassLoader().getResource("tdtschemes/auxiliary/ManagerTranslation.xml");
-		URL schemes = TagHelper.class.getClassLoader().getResource("tdtschemes/schemes/");		
-		//TDTEngine tdt = new TDTEngine(new URL("file:/tmp/tdt/auxiliary/ManagerTranslation.xml"), new URL("file:///tmp/tdt/schemes/"));
+		URL auxiliary = TagHelper.class.getClassLoader().getResource(
+				"auxiliary/ManagerTranslation.xml");
+		URL schemes = TagHelper.class.getClassLoader().getResource(
+				"schemes/");
+		// TDTEngine tdt = new TDTEngine(new
+		// URL("file:/tmp/tdt/auxiliary/ManagerTranslation.xml"), new
+		// URL("file:///tmp/tdt/schemes/"));
 		TDTEngine tdt = new TDTEngine(auxiliary, schemes);
-		Map<String, String> extraparms = new HashMap<String, String> ();
+		Map<String, String> extraparms = new HashMap<String, String>();
 		extraparms.put("taglength", "96");
 		extraparms.put("filter", "3");
 		extraparms.put("gs1companyprefixlength", "7");
-		
-		//String hex = tdt.convert(line, extraparms, LevelTypeList.TAG_ENCODING);
+
+		// String hex = tdt.convert(line, extraparms,
+		// LevelTypeList.TAG_ENCODING);
 		System.out.println(tdt.bin2hex(TAG1_BINARY));
 		System.out.println(tdt.bin2hex(TAG2_BINARY));
 		System.out.println(tdt.bin2hex(TAG3_BINARY));
 
-		String converted = tdt.convert("001100000111010000000010010000100010000000011101100010000100000000000000000011111110011000110010", LevelTypeList.BINARY, "96", extraparms, LevelTypeList.TAG_ENCODING);
+		String converted = tdt
+				.convert(
+						"001100000111010000000010010000100010000000011101100010000100000000000000000011111110011000110010",
+						LevelTypeList.BINARY, "96", extraparms,
+						LevelTypeList.TAG_ENCODING);
 		System.out.println(converted);
 		System.out.println(TAG1_PURE_URI);
 		Assert.assertEquals(TAG1_PURE_URI, converted);
 	}
-	
-	
+
 	@Test
 	public void testCycleWithOneRound() throws Exception {
-		ECSpec ecspec = DeserializerUtil.deserializeECSpec(EventCycleTest.class.getResourceAsStream("/ecspecs/eventCycle-testOneRound.xml"));
-		
+		ECSpec ecspec = DeserializerUtil.deserializeECSpec(EventCycleTest.class
+				.getResourceAsStream("/ecspecs/eventCycle-testOneRound.xml"));
+
 		final String logicalReaderName1 = "LogicalReader1";
 		LogicalReader lr1 = EasyMock.createMock(LogicalReader.class);
 		EasyMock.expect(lr1.getName()).andReturn(logicalReaderName1).anyTimes();
 		lr1.addObserver(EasyMock.isA(EventCycle.class));
 		EasyMock.expectLastCall().anyTimes();
 		EasyMock.replay(lr1);
-		
-		LogicalReaderManager manager = EasyMock.createMock(LogicalReaderManager.class);
-		EasyMock.expect(manager.contains(logicalReaderName1)).andReturn(true).anyTimes();
-		EasyMock.expect(manager.getLogicalReader(logicalReaderName1)).andReturn(lr1).anyTimes();
+
+		LogicalReaderManager manager = EasyMock
+				.createMock(LogicalReaderManager.class);
+		EasyMock.expect(manager.contains(logicalReaderName1)).andReturn(true)
+				.anyTimes();
+		EasyMock.expect(manager.getLogicalReader(logicalReaderName1))
+				.andReturn(lr1).anyTimes();
 		EasyMock.replay(manager);
-		
-		ReportsGenerator reportsGenerator = EasyMock.createMock(ReportsGenerator.class);
-		EasyMock.expect(reportsGenerator.getName()).andReturn("generator").anyTimes();
-		EasyMock.expect(reportsGenerator.getSpec()).andReturn(ecspec).anyTimes();
-		reportsGenerator.notifySubscribers(EasyMock.isA(ECReports.class), EasyMock.isA(EventCycle.class));
-		
+
+		ReportsGenerator reportsGenerator = EasyMock
+				.createMock(ReportsGenerator.class);
+		EasyMock.expect(reportsGenerator.getName()).andReturn("generator")
+				.anyTimes();
+		EasyMock.expect(reportsGenerator.getSpec()).andReturn(ecspec)
+				.anyTimes();
+		reportsGenerator.notifySubscribers(EasyMock.isA(ECReports.class),
+				EasyMock.isA(EventCycle.class));
+
 		// need a handle onto the spec delivered for the reader creation.
-		final AtomicReference<ECReports> ref = new AtomicReference<ECReports>(); 
+		final AtomicReference<ECReports> ref = new AtomicReference<ECReports>();
 		EasyMock.expectLastCall().andDelegateTo(new ReportsGenerator() {
 			@Override
-			public void unsubscribe(String notificationURI) throws NoSuchSubscriberException, InvalidURIException { }
+			public void unsubscribe(String notificationURI)
+					throws NoSuchSubscriberException, InvalidURIException {
+			}
+
 			@Override
-			public void subscribe(String notificationURI) throws DuplicateSubscriptionException, InvalidURIException { }		
+			public void subscribe(String notificationURI)
+					throws DuplicateSubscriptionException, InvalidURIException {
+			}
+
 			@Override
-			public void poll() { }
+			public void poll() {
+			}
+
 			@Override
 			public void notifySubscribers(ECReports reports, EventCycle ec) {
 				// store the reports for later test analysis
 				ref.set(reports);
 			}
+
 			@Override
-			public List<String> getSubscribers() { return null; }
+			public List<String> getSubscribers() {
+				return null;
+			}
+
 			@Override
-			public boolean isStateRequested() { return true; }
+			public boolean isStateRequested() {
+				return true;
+			}
+
 			@Override
-			public ECSpec getSpec() { return null; }			
+			public ECSpec getSpec() {
+				return null;
+			}
+
 			@Override
-			public ECReports getPollReports() { return null; }			
+			public ECReports getPollReports() {
+				return null;
+			}
+
 			@Override
-			public String getName() { return null; }
+			public String getName() {
+				return null;
+			}
+
 			@Override
-			public void setStateRequested() { }
+			public void setStateRequested() {
+			}
+
 			@Override
-			public void setStateUnRequested() { }
+			public void setStateUnRequested() {
+			}
+
 			@Override
-			public boolean isStateUnRequested() { return false;	}
+			public boolean isStateUnRequested() {
+				return false;
+			}
 		});
-		
+
 		EasyMock.replay(reportsGenerator);
-		
+
 		final EventCycle cycle = new EventCycleImpl(reportsGenerator, manager);
 		final Tag t1 = new Tag();
 		t1.setTagAsBinary(TAG1_BINARY);
@@ -169,15 +215,15 @@ public class EventCycleTest {
 		t3.setTagIDAsPureURI(TAG3_PURE_URI);
 		t3.setTagLength("96");
 		t3.setCompanyPrefixLength("7");
-		t3.setFilter("3");		
-		
-		final List<Tag> tags = new LinkedList<Tag> ();
+		t3.setFilter("3");
+
+		final List<Tag> tags = new LinkedList<Tag>();
 		tags.add(t2);
 		tags.add(t3);
-		
+
 		Assert.assertFalse(((EventCycleImpl) cycle).isRoundOver());
-		
-		Thread sender = new Thread(new Runnable(){
+
+		Thread sender = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
@@ -191,20 +237,20 @@ public class EventCycleTest {
 					System.out.println("got interrupted - quitting.");
 				}
 			}
-			
+
 		});
 		sender.start();
-		
+
 		// execute the eventcycle once and check the result...
 		cycle.launch();
-		
+
 		Thread.sleep(2000L);
 		sender.interrupt();
 
 		EasyMock.verify(lr1);
 		EasyMock.verify(manager);
 		EasyMock.verify(reportsGenerator);
-		
+
 		ECReports reports = ref.get();
 		Assert.assertNotNull(reports);
 		Assert.assertEquals("DURATION", reports.getTerminationCondition());
@@ -213,7 +259,8 @@ public class EventCycleTest {
 		Assert.assertEquals(1, ecReports.size());
 		ECReport report = ecReports.get(0);
 		Assert.assertNotNull(report);
-		List<ECReportGroupListMember> gmember = report.getGroup().get(0).getGroupList().getMember();
+		List<ECReportGroupListMember> gmember = report.getGroup().get(0)
+				.getGroupList().getMember();
 		Assert.assertEquals(3, gmember.size());
 		boolean t1Contained = false;
 		boolean t2Contained = false;
@@ -229,13 +276,15 @@ public class EventCycleTest {
 				t3Contained = true;
 			}
 		}
+
 		Assert.assertTrue(t1Contained);
-		Assert.assertTrue(t2Contained);
+		Assert.assertFalse(t2Contained);
 		Assert.assertTrue(t3Contained);
-		
+
 		Assert.assertNotNull(cycle.getLastReports());
 
 		Assert.assertTrue(((EventCycleImpl) cycle).isRoundOver());
 		Assert.assertEquals(1, cycle.getRounds());
+		System.out.println("Assertion finished for EventCycle.");
 	}
 }
