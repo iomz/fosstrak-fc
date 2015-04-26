@@ -472,7 +472,7 @@ public class LLRPAdaptor extends BaseReader {
 								//else {
 							    pureID = TagHelper.getTDTEngine().convert(
 								         TagHelper.getTDTEngine().hex2bin(hx), hx, params, tag.getNsi(), 
-									     tag.getAfi(),tag.getTagLength(), LevelTypeList.PURE_IDENTITY);
+									     tag.getAfi(), tag.getTagLength(), LevelTypeList.PURE_IDENTITY);
 						    	 log.debug("before pureid="+pureID);
 							    if (!pureID.isEmpty()) {
 							    	 log.debug("pureid="+pureID);
