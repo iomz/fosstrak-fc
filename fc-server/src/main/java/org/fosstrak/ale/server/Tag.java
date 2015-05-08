@@ -124,8 +124,8 @@ public class Tag {
 		this.afi = String.valueOf(pc & 0x000000ff); 
 		this.umi = String.valueOf(pc & 0x00000400); 
 		this.xi = String.valueOf(pc & 0x00000200); 
-	    this.length = ((pc & 0x0000f800) >> 11) * 16; 
-	    
+	    this.length = ((pc & 0x0000f800) >> 11) * 16;
+	    this.setTagLength(Integer.toString(this.length));
 	}
 	/**
 	 * returns the id of this tag.

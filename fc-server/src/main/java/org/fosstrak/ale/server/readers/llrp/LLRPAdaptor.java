@@ -319,7 +319,6 @@ public class LLRPAdaptor extends BaseReader {
 	}
 
 	public void notify(byte[] binaryMessage, String readerName) throws RemoteException {
-		log.debug("notify");
 		try {
 			List<Tag> tags = new LinkedList<Tag>();
 			LLRPMessage message = LLRPMessageFactory.createLLRPMessage(binaryMessage);
@@ -327,6 +326,7 @@ public class LLRPAdaptor extends BaseReader {
 			Tag tag = null; // 
 
 			if (message instanceof RO_ACCESS_REPORT) {
+				log.debug("# RO_ACCESS_Report notified");
 				RO_ACCESS_REPORT report = (RO_ACCESS_REPORT)message;
 				List<TagReportData> tagDataList = report.getTagReportDataList();
 				for (TagReportData tagData : tagDataList) {
@@ -473,7 +473,6 @@ public class LLRPAdaptor extends BaseReader {
 							    pureID = TagHelper.getTDTEngine().convert(
 								         TagHelper.getTDTEngine().hex2bin(hx), hx, params, tag.getNsi(), 
 									     tag.getAfi(), tag.getTagLength(), LevelTypeList.PURE_IDENTITY);
-						    	 log.debug("before pureid="+pureID);
 							    if (!pureID.isEmpty()) {
 							    	 log.debug("pureid="+pureID);
 							         tag.setTagIDAsPureURI(pureID);
