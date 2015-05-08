@@ -46,6 +46,7 @@ import org.fosstrak.ale.xsd.ale.epcglobal.ECReportGroupListMember;
 import org.fosstrak.ale.xsd.ale.epcglobal.ECReports;
 import org.fosstrak.ale.xsd.ale.epcglobal.ECSpec;
 import org.fosstrak.tdt.TDTEngine;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -61,6 +62,8 @@ import org.junit.Test;
  * @author swieland
  *
  */
+// TODO: Make runnable with maven test
+@Ignore
 public class EventCycleTest {
 
 	private final String TAG1_BINARY = "001100000111010000000010010000100010000000011101100010000100000000000000000011111110011000110010";
