@@ -328,9 +328,9 @@ public final class TagHelper {
 			try {
 				LOG.debug("Initialize TDT Engine for tag translation.");
 				URL auxiliary = TagHelper.class.getClassLoader().getResource(
-						"auxiliary/ManagerTranslation.xml");
+						"tdtschemes/auxiliary/ManagerTranslation.xml");
 				URL schemes = TagHelper.class.getClassLoader().getResource(
-						"schemes/");
+						"tdtschemes/schemes/");
 				// URL isoafis =
 				// TagHelper.class.getClassLoader().getResource("auxiliary/Isoafis.xml");
 				engine = new TDTEngine(auxiliary, schemes);
