@@ -74,7 +74,7 @@ public class HTTPSubscriberOutputChannel extends AbstractSocketSubscriberOutputC
 	
 	@Override
 	public boolean notify(ECReports reports) throws ImplementationException {			
-		LOG.debug("HTTP/1.1 POST request of reports '" + reports.getSpecName() + " to " + getHost() + ":" + getPort() + "'.");
+		LOG.debug("HTTP/1.1 POST ECReport of '" + reports.getSpecName() + "' to " + getURL().toString() + " .");
 		try {
 			httpPostRequest(reports);
 		} catch (ClientProtocolException e) {
@@ -84,8 +84,6 @@ public class HTTPSubscriberOutputChannel extends AbstractSocketSubscriberOutputC
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//LOG.debug("Write reports '" + reports.getSpecName() + "' as post request to http socket '" + getHost() + ":" + getPort() + "'.");
-		//writeToSocket(getPostRequest(reports));
 		return true;
 	}
 	
@@ -113,10 +111,9 @@ public class HTTPSubscriberOutputChannel extends AbstractSocketSubscriberOutputC
 	    post.setEntity(new UrlEncodedFormEntity(urlParameters));
 
 	    HttpResponse response = client.execute(post);
-	    System.out.println("\nSending 'POST' request to URL : " + url);
-	    System.out.println("Post parameters : " + post.getEntity());
-	    System.out.println("Response Code : " + 
-	                                response.getStatusLine().getStatusCode());
+	    LOG.debug("\nSending 'POST' request to URL : " + url);
+	    LOG.debug("Post parameters : " + post.getEntity());
+	    LOG.debug("Response Code : " + response.getStatusLine().getStatusCode());
 
 	    BufferedReader rd = new BufferedReader(
 	                    new InputStreamReader(response.getEntity().getContent()));
@@ -128,57 +125,6 @@ public class HTTPSubscriberOutputChannel extends AbstractSocketSubscriberOutputC
 	    }
 	    	    
 		return result.toString();
-	}
-
-	/**
-	 * This method creates a post request from ec reports containing an xml representation of the reports.
-	 * 
-	 * @param reports to transform into a post request
-	 * @return post request containing an xml representation of the reports
-	 * @throws ImplementationException if an implementation exception occurs
-	 */
-	private String getPostRequest(ECReports reports) throws ImplementationException {
-		
-		LOG.debug("Create POST request with reports '" + reports.getSpecName() + "'.");
-		
-		// create body
-		String body = getXml(reports);
-		
-		// create header
-		StringBuffer header = new StringBuffer();
-		
-		// append request line
-		header.append("POST ");
-		// add the trimmed / again together with a white space
-		String p = "/" + getPath() + " ";
-		header.append(p);
-			
-		header.append("HTTP/1.1");
-		header.append("\n");
-		
-		// append host
-		header.append("Host: ");
-		// append port 
-		// patch by Gianrico D'Angelis <gianrico.dangelis@gmail.com>  
-		header.append(getHost() + ":" + getPort());  
-		header.append("\n");
-		
-    
-      
-		// append content type
-		header.append("Content-Type: ");
-		header.append("text/xml; charset=\"utf-8\"");
-		header.append("\n");
-		
-		// append content length
-		header.append("Content-Length: ");
-		header.append(body.length());
-		header.append("\n");
-		
-		// terminate body
-		header.append("\n");
-
-		return header + body;
 	}
 
 	@Override
