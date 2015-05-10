@@ -253,10 +253,15 @@ public class Pattern {
 		if (usage == PatternUsage.TAG) {
 			return false;
 		}
+		
 
 		// create pattern of usage TAG ('*' and 'X' are not allowed)
 		Pattern tag = new Pattern(tagURI, PatternUsage.TAG);
 
+		if (tag.getType() == null) {
+			return false;
+		}
+		
 		// check type
 		if (tag.getType().equals(getType())) {
 
