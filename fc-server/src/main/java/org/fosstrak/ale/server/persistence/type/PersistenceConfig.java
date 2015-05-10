@@ -57,7 +57,7 @@ public class PersistenceConfig {
 	 * @return absolute path to the LRSpecs persistence path.
 	 */
 	public String getRealPathECSpecDir() {
-		return realPathWebapp +EC_SPECS_WEBAPP_PATH;
+		return realPathWebapp + EC_SPECS_WEBAPP_PATH;
 	}
 	
 	/**

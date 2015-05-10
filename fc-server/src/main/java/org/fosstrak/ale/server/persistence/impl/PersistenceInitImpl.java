@@ -50,6 +50,9 @@ public class PersistenceInitImpl implements PersistenceInit {
 		try {
 			LOG.info("ALE Persistence => start");
 			String path = servletContext.getRealPath("/");
+			if ( path.endsWith("/") ) {
+				path = path.substring(0, path.length()-1);
+			}
 			LOG.debug("ALE Persistence real path of the webapp: " + path);
 			persistenceConfig.setRealPathWebapp(path);
 
