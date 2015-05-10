@@ -183,22 +183,22 @@ public class PatternDataFieldTest {
 		PatternDataField asteriskField = new PatternDataField(ASTERISK, PatternUsage.GROUP);
 		PatternDataField xField = new PatternDataField(X, PatternUsage.GROUP);
 		
-		Assert.assertTrue(intField.isInt());
+		Assert.assertTrue(intField.isLong());
 		Assert.assertFalse(intField.isRange());
 		Assert.assertFalse(intField.isAsterisk());
 		Assert.assertFalse(intField.isX());
 		
-		Assert.assertFalse(rangeField.isInt());
+		Assert.assertFalse(rangeField.isLong());
 		Assert.assertTrue(rangeField.isRange());
 		Assert.assertFalse(rangeField.isAsterisk());
 		Assert.assertFalse(rangeField.isX());
 		
-		Assert.assertFalse(asteriskField.isInt());
+		Assert.assertFalse(asteriskField.isLong());
 		Assert.assertFalse(asteriskField.isRange());
 		Assert.assertTrue(asteriskField.isAsterisk());
 		Assert.assertFalse(asteriskField.isX());
 		
-		Assert.assertFalse(xField.isInt());
+		Assert.assertFalse(xField.isLong());
 		Assert.assertFalse(xField.isRange());
 		Assert.assertFalse(xField.isAsterisk());
 		Assert.assertTrue(xField.isX());
