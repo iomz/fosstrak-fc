@@ -77,12 +77,22 @@
       <groupId>org.fosstrak.tdt</groupId>
       <artifactId>tdt</artifactId>
       <version>1.0.1-SNAPSHOT</version>
+      <scope>compile</scope>
+      <!--
+      <scope>system</scope>
+      <systemPath>${env.M2_REPOSITORY}/org/fosstrak/tdt/tdt/1.0.1-SNAPSHOT/tdt-1.0.1-SNAPSHOT.jar</systemPath>
+      -->
     </dependency>
     <dependency>
       <groupId>org.fosstrak.llrp</groupId>
       <artifactId>llrp-adaptor</artifactId>
       <version>${fosstrak.llrp.version}</version>
       <scope>compile</scope>
+      <!--
+      <version>1.2.2-SNAPSHOT</version>      
+      <scope>system</scope>
+      <systemPath>${env.M2_REPOSITORY}/org/fosstrak/llrp/llrp-adaptor/1.2.2-SNAPSHOT/llrp-adaptor-1.2.2-SNAPSHOT.jar</systemPath>
+      -->
     </dependency>
     <dependency>
       <groupId>org.fosstrak.reader</groupId>
