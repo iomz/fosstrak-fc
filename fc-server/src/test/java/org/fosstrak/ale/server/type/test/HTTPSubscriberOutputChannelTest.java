@@ -34,6 +34,7 @@ import org.fosstrak.ale.exception.InvalidURIException;
 import org.fosstrak.ale.server.type.HTTPSubscriberOutputChannel;
 import org.fosstrak.ale.util.DeserializerUtil;
 import org.fosstrak.ale.xsd.ale.epcglobal.ECReports;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import util.ECElementsUtils;
@@ -109,6 +110,7 @@ public class HTTPSubscriberOutputChannelTest {
 	}
 
 	@Test
+	@Ignore
 	public void testNotify_Http() throws Exception {
 		
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();

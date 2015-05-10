@@ -19,8 +19,22 @@
  */
 package org.fosstrak.ale.server.type;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.*;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.log4j.Logger;
 import org.fosstrak.ale.exception.ImplementationException;
 import org.fosstrak.ale.exception.InvalidURIException;
@@ -60,12 +74,62 @@ public class HTTPSubscriberOutputChannel extends AbstractSocketSubscriberOutputC
 	
 	@Override
 	public boolean notify(ECReports reports) throws ImplementationException {			
-		LOG.debug("Write reports '" + reports.getSpecName() + "' as post request to http socket '" + getHost() + ":" + getPort() + "'.");
-		writeToSocket(getPostRequest(reports));
+		LOG.debug("HTTP/1.1 POST request of reports '" + reports.getSpecName() + " to " + getHost() + ":" + getPort() + "'.");
+		try {
+			httpPostRequest(reports);
+		} catch (ClientProtocolException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//LOG.debug("Write reports '" + reports.getSpecName() + "' as post request to http socket '" + getHost() + ":" + getPort() + "'.");
+		//writeToSocket(getPostRequest(reports));
 		return true;
 	}
 	
-	
+	/**
+	 * This method creates a post request from ec reports containing an xml representation of the reports.
+	 * 
+	 * @param reports to post as an xml
+	 * @return response from the url
+	 * @throws ImplementationException 
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 */	
+	private String httpPostRequest(ECReports reports) throws ImplementationException, ClientProtocolException, IOException {
+		String xmlString = getXml(reports);
+		String url = getURL().toString();
+		
+		HttpClient client = HttpClientBuilder.create().build();
+		HttpPost post = new HttpPost(url);
+		
+		post.setHeader("User-Agent", "Fosstrak");
+		
+		List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+	    urlParameters.add(new BasicNameValuePair("xml", xmlString));
+	    
+	    post.setEntity(new UrlEncodedFormEntity(urlParameters));
+
+	    HttpResponse response = client.execute(post);
+	    System.out.println("\nSending 'POST' request to URL : " + url);
+	    System.out.println("Post parameters : " + post.getEntity());
+	    System.out.println("Response Code : " + 
+	                                response.getStatusLine().getStatusCode());
+
+	    BufferedReader rd = new BufferedReader(
+	                    new InputStreamReader(response.getEntity().getContent()));
+
+	    StringBuffer result = new StringBuffer();
+	    String line = "";
+	    while ((line = rd.readLine()) != null) {
+	        result.append(line);
+	    }
+	    	    
+		return result.toString();
+	}
+
 	/**
 	 * This method creates a post request from ec reports containing an xml representation of the reports.
 	 * 
@@ -131,6 +195,10 @@ public class HTTPSubscriberOutputChannel extends AbstractSocketSubscriberOutputC
 		return path;
 	}
 
+	public URL getURL() {
+		return url;
+	}
+	
 	@Override
 	public String toString() {
 		return url.toString();

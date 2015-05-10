@@ -41,7 +41,6 @@ import org.junit.Test;
  *
  */
 // TODO: Make runnable with maven test
-//@Ignore
 public class MultiStandardTest {
 
 	private final String TAG1_BINARY = "001100000010110110110011000110011010000000000000000000000100000000000000000000000000000000000011";

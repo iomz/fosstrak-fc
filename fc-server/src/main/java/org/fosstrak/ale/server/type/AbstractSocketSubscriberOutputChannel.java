@@ -57,6 +57,7 @@ public abstract class AbstractSocketSubscriberOutputChannel extends AbstractSubs
 			
 			// write reports
 			dataOutputStream.writeBytes(data);
+			LOG.debug("\n" + data);
 			dataOutputStream.write("\n".getBytes());
 			dataOutputStream.flush();
 			
