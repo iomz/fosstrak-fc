@@ -251,7 +251,7 @@ public class LLRPAdaptor extends BaseReader {
 		for (Tag tag : tags) {
 			tag.addTrace(getName());
 		}
-		
+		//log.debug("notifying the tags to fc");
 		notifyObservers(tags);
 	}
 
@@ -326,7 +326,7 @@ public class LLRPAdaptor extends BaseReader {
 			Tag tag = null; // 
 
 			if (message instanceof RO_ACCESS_REPORT) {
-				log.debug("# RO_ACCESS_Report notified");
+				//log.debug("# RO_ACCESS_Report notified");
 				RO_ACCESS_REPORT report = (RO_ACCESS_REPORT)message;
 				List<TagReportData> tagDataList = report.getTagReportDataList();
 				for (TagReportData tagData : tagDataList) {
@@ -351,12 +351,12 @@ public class LLRPAdaptor extends BaseReader {
 						if (aptd instanceof C1G2_CRC) {
 							C1G2_CRC c1g2_crc = (C1G2_CRC) aptd;
 							if ((null != c1g2_crc) && (null != c1g2_crc.getCRC())) {
-								log.debug("C1G2_CRC="+c1g2_crc.getCRC().toString());
+								//log.debug("C1G2_CRC="+c1g2_crc.getCRC().toString());
 							}
 						} else if (aptd instanceof C1G2_PC) {
 							c1g2_pc = (C1G2_PC) aptd;
 							if ((null != c1g2_pc) && (null != c1g2_pc.getPC_Bits())) {
-								log.debug("C1G2_PC="+c1g2_pc.getPC_Bits().toString());
+								//log.debug("C1G2_PC="+c1g2_pc.getPC_Bits().toString());
 								tag.setNsiafi(c1g2_pc.getPC_Bits().toString());
 								tag.setTagLength();
 							}
@@ -384,7 +384,9 @@ public class LLRPAdaptor extends BaseReader {
 					    }
 						//log.debug("hx first="+hx); 
 						//Tag tag = null;
-						TDTEngine tdt = TagHelper.getTDTEngine();
+				    	//log.debug("Read EPCParameter: '" + hx + "'.");
+
+					    TDTEngine tdt = TagHelper.getTDTEngine();
 						try {
 							String binary = tdt.hex2bin(hx);
 							if (binary.startsWith("1") && 
@@ -392,8 +394,7 @@ public class LLRPAdaptor extends BaseReader {
 								
 								binary = "00" + binary;
 							}
-							
-	
+								
 							tag.setTagAsBinary(binary);
 							tag.setTagID(binary.getBytes());
 							tag.setReader(readerName);
@@ -423,7 +424,7 @@ public class LLRPAdaptor extends BaseReader {
 								if ((op.getResult().intValue() == C1G2ReadResultType.Success) && 
 									(op.getOpSpecID().intValue() == userMemReadOpSpecID)){
 									UnsignedShortArray_HEX userMemoryHex = op.getReadData();
-									log.debug ("User Memory read from the tag is = " + userMemoryHex.toString());
+									//log.debug ("User Memory read from the tag is = " + userMemoryHex.toString());
 									tag.setUserMemory(userMemoryHex.toString());
 								}
 							}
@@ -434,7 +435,7 @@ public class LLRPAdaptor extends BaseReader {
 								C1G2WriteOpSpecResult op = (C1G2WriteOpSpecResult)accessResult;
 								if ((op.getResult().intValue()== C1G2WriteResultType.Success)&&
 									(op.getOpSpecID().intValue() == userMemWriteOpSpecID)) {
-									log.debug ("Writing in the User Memory of the tag has succeeded.");
+									//log.debug ("Writing in the User Memory of the tag has succeeded.");
 								}
 							}
 						}	
@@ -460,7 +461,7 @@ public class LLRPAdaptor extends BaseReader {
 								Map<String,String>params = new HashMap<String,String>();
 
 
-								log.debug("hx="+hx);
+								//log.debug("hx="+hx);
 								String pureID; 
 								//if (tag.getNsi().equals("0") & tag.getTagLength().equals("96")) {
 								//	params.put("taglength", "96"); //tag.getTagLength()); 
@@ -474,11 +475,9 @@ public class LLRPAdaptor extends BaseReader {
 								         TagHelper.getTDTEngine().hex2bin(hx), hx, params, tag.getNsi(), 
 									     tag.getAfi(), tag.getTagLength(), LevelTypeList.PURE_IDENTITY);
 							    if (!pureID.isEmpty()) {
-							    	 log.debug("pureid="+pureID);
 							         tag.setTagIDAsPureURI(pureID);
 							    }   
 							    else {
-							    	log.debug("urn:prop-"+tag.getTagLength()+"x"+hx); 
 							    	tag.setTagIDAsPureURI("urn:prop:"+tag.getTagLength()+"x"+hx);
 							    }
 								//}

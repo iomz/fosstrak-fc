@@ -290,7 +290,7 @@ public class LLRPManager implements LLRPExceptionHandler, MessageHandler {
 
 	public void handle(String adaptorName, String readerName,
 			LLRPMessage message) {
-		log.debug("placeholder. NEVER IMPLEMENTED.");		
+		//log.debug("placeholder. NEVER IMPLEMENTED.");		
 	}
 
 

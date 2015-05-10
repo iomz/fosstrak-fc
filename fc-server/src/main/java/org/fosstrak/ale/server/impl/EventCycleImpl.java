@@ -329,8 +329,8 @@ public final class EventCycleImpl implements EventCycle, Runnable {
 	 */
 	private void logTagOnDebugEnabled(Tag tagToLog) {
 		if (LOG.isDebugEnabled()) {
-			//LOG.debug("EventCycle '" + name + "' add Tag '" + tagToLog.getTagIDAsPureURI() + "'."); 
-			LOG.debug("EventCycle '" + name + "' add Tag '" + tagToLog.getTagID() + "'."); 
+			LOG.debug("EventCycle '" + name + "' add Tag '" + tagToLog.getTagIDAsPureURI() + "'."); 
+			//LOG.debug("EventCycle '" + name + "' add Tag '" + tagToLog.getTagID() + "'."); 
 		}
 	}
 
@@ -341,21 +341,23 @@ public final class EventCycleImpl implements EventCycle, Runnable {
 	 */
 	private void addTagAndLogOnNotAdded(Set<Tag> whereToAddTheTag, Tag theTagToAdd) {
 		if (!whereToAddTheTag.add(theTagToAdd) && LOG.isDebugEnabled()) {
-			LOG.debug("tag already contained, therefore not adding.");
+			LOG.debug("Tag already contained, therefore not adding.");
+		} else {
+			LOG.debug("Tag successfully added.");
 		}
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		LOG.debug("EventCycle "+ getName() + ": Update notification received. ");
+		//LOG.debug("EventCycle "+ getName() + ": Update notification received. ");
 		List<Tag> tags = new LinkedList<Tag> ();
 		// process the new tag.
 		if (arg instanceof Tag) {
-			LOG.debug("processing one tag");
+			//LOG.debug("processing one tag");
 			// process one tag
 			tags.add((Tag) arg);
 		} else if (arg instanceof List) {
-			LOG.debug("processing a list of tags");
+			//LOG.debug("processing a list of tags");
 			for (Object entry : (List<?>) arg) {
 				if (entry instanceof Tag) {
 					tags.add((Tag) entry);					
@@ -391,7 +393,7 @@ public final class EventCycleImpl implements EventCycle, Runnable {
 			
 			betweenEventsCycleTags.clear();			
 		}
-		LOG.debug("EventCycle "+ getName() + ": Received list of tags :");
+		//LOG.debug("EventCycle "+ getName() + ": Received list of tags :");
 		for (Tag tag : tags) {
 			addTag(tag);
 		}
@@ -532,12 +534,15 @@ public final class EventCycleImpl implements EventCycle, Runnable {
 				
 				tags = Collections.synchronizedSet(new HashSet<Tag>());
 				
+			} catch (NullPointerException e) {
+				LOG.info("eventcycle got interrupted due to NullPointerException", e);
+				return;
 			} catch (Exception e) {
-				if (e instanceof InterruptedException) {
+				if ( e instanceof InterruptedException) {
 					LOG.info("eventcycle got interrupted");
-					return;
 				}
 				LOG.error("EventCycle "+ getName() + ": Could not create ECReports", e);
+				return;
 			}
 			
 			
