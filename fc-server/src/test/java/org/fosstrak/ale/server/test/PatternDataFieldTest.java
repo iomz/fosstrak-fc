@@ -36,9 +36,9 @@ import org.junit.Test;
  */
 public class PatternDataFieldTest {
 
-	private static final String INT = "50";
-	private static final int LOW = 0;
-	private static final int HIGH = 100;
+	private static final String LONG = "50";
+	private static final long LOW = 0;
+	private static final long HIGH = 100;
 	private static final String RANGE = "[" + LOW + "-" + HIGH + "]";
 	private static final String ASTERISK = "*";
 	private static final String X = "X";
@@ -55,7 +55,7 @@ public class PatternDataFieldTest {
 	@Test
 	public void testCreateTagDataField() throws Exception {
 		
-		new PatternDataField(INT, PatternUsage.TAG);
+		new PatternDataField(LONG, PatternUsage.TAG);
 		
 	}
 
@@ -65,7 +65,7 @@ public class PatternDataFieldTest {
 		try {
 			new PatternDataField(RANGE, PatternUsage.TAG);
 		} catch(ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field '" + RANGE + "'. Only 'int' is allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field '" + RANGE + "'. Only 'long' is allowed.", e.getMessage());
 			return;
 		}
 		
@@ -79,7 +79,7 @@ public class PatternDataFieldTest {
 		try {
 			new PatternDataField(ASTERISK, PatternUsage.TAG);
 		} catch(ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field '" + ASTERISK + "'. Only 'int' is allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field '" + ASTERISK + "'. Only 'long' is allowed.", e.getMessage());
 			return;
 		}
 		
@@ -93,7 +93,7 @@ public class PatternDataFieldTest {
 		try {
 			new PatternDataField(X, PatternUsage.TAG);
 		} catch(ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field '" + X + "'. Only 'int' is allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field '" + X + "'. Only 'long' is allowed.", e.getMessage());
 			return;
 		}
 		
@@ -107,7 +107,7 @@ public class PatternDataFieldTest {
 		try {
 			new PatternDataField(ABC, PatternUsage.TAG);
 		} catch(ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field '" + ABC + "'. Only 'int' is allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field '" + ABC + "'. Only 'long' is allowed.", e.getMessage());
 			return;
 		}
 		
@@ -118,7 +118,7 @@ public class PatternDataFieldTest {
 	@Test
 	public void testCreateFilterDataField() throws Exception {
 		
-		new PatternDataField(INT, PatternUsage.FILTER);
+		new PatternDataField(LONG, PatternUsage.FILTER);
 		new PatternDataField(RANGE, PatternUsage.FILTER);
 		new PatternDataField(ASTERISK, PatternUsage.FILTER);
 		
@@ -130,7 +130,7 @@ public class PatternDataFieldTest {
 		try {
 			new PatternDataField(X, PatternUsage.FILTER);
 		} catch(ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field '" + X + "'. Only '*', '[lo-hi]' or 'int' are allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field '" + X + "'. Only '*', '[lo-hi]' or 'long' are allowed.", e.getMessage());
 			return;
 		}
 		
@@ -144,7 +144,7 @@ public class PatternDataFieldTest {
 		try {
 			new PatternDataField(ABC, PatternUsage.FILTER);
 		} catch(ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field '" + ABC + "'. Only '*', '[lo-hi]' or 'int' are allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field '" + ABC + "'. Only '*', '[lo-hi]' or 'long' are allowed.", e.getMessage());
 			return;
 		}
 		
@@ -155,7 +155,7 @@ public class PatternDataFieldTest {
 	@Test
 	public void testCreateGroupDataField() throws Exception {
 		
-		new PatternDataField(INT, PatternUsage.GROUP);
+		new PatternDataField(LONG, PatternUsage.GROUP);
 		new PatternDataField(RANGE, PatternUsage.GROUP);
 		new PatternDataField(ASTERISK, PatternUsage.GROUP);
 		
@@ -167,7 +167,7 @@ public class PatternDataFieldTest {
 		try {
 			new PatternDataField(ABC, PatternUsage.GROUP);
 		} catch(ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field '" + ABC + "'. Only '*', 'X', '[lo-hi]' or 'int' are allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field '" + ABC + "'. Only '*', 'X', '[lo-hi]' or 'long' are allowed.", e.getMessage());
 			return;
 		}
 		
@@ -178,15 +178,15 @@ public class PatternDataFieldTest {
 	@Test
 	public void testTypes() throws Exception {
 
-		PatternDataField intField = new PatternDataField(INT, PatternUsage.GROUP);
+		PatternDataField longField = new PatternDataField(LONG, PatternUsage.GROUP);
 		PatternDataField rangeField = new PatternDataField(RANGE, PatternUsage.GROUP);
 		PatternDataField asteriskField = new PatternDataField(ASTERISK, PatternUsage.GROUP);
 		PatternDataField xField = new PatternDataField(X, PatternUsage.GROUP);
 		
-		Assert.assertTrue(intField.isLong());
-		Assert.assertFalse(intField.isRange());
-		Assert.assertFalse(intField.isAsterisk());
-		Assert.assertFalse(intField.isX());
+		Assert.assertTrue(longField.isLong());
+		Assert.assertFalse(longField.isRange());
+		Assert.assertFalse(longField.isAsterisk());
+		Assert.assertFalse(longField.isX());
 		
 		Assert.assertFalse(rangeField.isLong());
 		Assert.assertTrue(rangeField.isRange());
@@ -208,14 +208,14 @@ public class PatternDataFieldTest {
 	@Test
 	public void testGetValue() throws Exception {
 
-		PatternDataField intField = new PatternDataField(INT, PatternUsage.GROUP);
+		PatternDataField longField = new PatternDataField(LONG, PatternUsage.GROUP);
 		
-		Assert.assertEquals(Integer.parseInt(INT), intField.getValue());
+		Assert.assertEquals(Long.parseLong(LONG), longField.getValue());
 		
 	}
 
 	/**
-	 * must throw an ECSpecValidationException because data field is not an of type int.
+	 * must throw an ECSpecValidationException because data field is not an of type long.
 	 * @throws ECSpecValidationException test expected.
 	 */
 	@Test(expected = ECSpecValidationException.class)
@@ -239,8 +239,8 @@ public class PatternDataFieldTest {
 	 */
 	@Test(expected = ECSpecValidationException.class)
 	public void testGetLowWithNonRangeDataField() throws Exception {
-		PatternDataField intField = new PatternDataField(INT, PatternUsage.GROUP);
-		intField.getLow();
+		PatternDataField longField = new PatternDataField(LONG, PatternUsage.GROUP);
+		longField.getLow();
 	}
 
 	@Test
@@ -258,34 +258,34 @@ public class PatternDataFieldTest {
 	 */
 	@Test(expected = ECSpecValidationException.class)
 	public void testGetHighWithNonRangeDataField() throws Exception {
-		PatternDataField intField = new PatternDataField(INT, PatternUsage.GROUP);
-		intField.getHigh();
+		PatternDataField longField = new PatternDataField(LONG, PatternUsage.GROUP);
+		longField.getHigh();
 	}
 
 	@Test
 	public void testIsDisjoint() throws Exception {
 
-		PatternDataField intField = new PatternDataField(INT, PatternUsage.GROUP);
+		PatternDataField longField = new PatternDataField(LONG, PatternUsage.GROUP);
 		PatternDataField rangeField = new PatternDataField(RANGE, PatternUsage.GROUP);
 		PatternDataField asteriskField = new PatternDataField(ASTERISK, PatternUsage.GROUP);
 		PatternDataField xField = new PatternDataField(X, PatternUsage.GROUP);
 		
-		PatternDataField disjointIntField = new PatternDataField(new Integer(HIGH + 1).toString(), PatternUsage.GROUP);
-		PatternDataField disjointRangeField = new PatternDataField("[" + new Integer(HIGH + 100).toString() + "-" +
-				new Integer(HIGH + 200).toString() + "]", PatternUsage.GROUP);
+		PatternDataField disjointIntField = new PatternDataField(new Long(HIGH + 1).toString(), PatternUsage.GROUP);
+		PatternDataField disjointRangeField = new PatternDataField("[" + new Long(HIGH + 100).toString() + "-" +
+				new Long(HIGH + 200).toString() + "]", PatternUsage.GROUP);
 		
-		// test intField
-		Assert.assertFalse(intField.isDisjoint(xField));
-		Assert.assertFalse(intField.isDisjoint(asteriskField));
-		Assert.assertFalse(intField.isDisjoint(intField));
-		Assert.assertFalse(intField.isDisjoint(rangeField));
-		Assert.assertTrue(intField.isDisjoint(disjointIntField));
-		Assert.assertTrue(intField.isDisjoint(disjointRangeField));
+		// test longField
+		Assert.assertFalse(longField.isDisjoint(xField));
+		Assert.assertFalse(longField.isDisjoint(asteriskField));
+		Assert.assertFalse(longField.isDisjoint(longField));
+		Assert.assertFalse(longField.isDisjoint(rangeField));
+		Assert.assertTrue(longField.isDisjoint(disjointIntField));
+		Assert.assertTrue(longField.isDisjoint(disjointRangeField));
 		
 		// test rangeField
 		Assert.assertFalse(rangeField.isDisjoint(xField));
 		Assert.assertFalse(rangeField.isDisjoint(asteriskField));
-		Assert.assertFalse(rangeField.isDisjoint(intField));
+		Assert.assertFalse(rangeField.isDisjoint(longField));
 		Assert.assertFalse(rangeField.isDisjoint(rangeField));
 		Assert.assertTrue(rangeField.isDisjoint(disjointIntField));
 		Assert.assertTrue(rangeField.isDisjoint(disjointRangeField));
@@ -293,7 +293,7 @@ public class PatternDataFieldTest {
 		// test asteriskField
 		Assert.assertFalse(asteriskField.isDisjoint(xField));
 		Assert.assertFalse(asteriskField.isDisjoint(asteriskField));
-		Assert.assertFalse(asteriskField.isDisjoint(intField));
+		Assert.assertFalse(asteriskField.isDisjoint(longField));
 		Assert.assertFalse(asteriskField.isDisjoint(rangeField));
 		Assert.assertFalse(asteriskField.isDisjoint(disjointIntField));
 		Assert.assertFalse(asteriskField.isDisjoint(disjointRangeField));
@@ -301,7 +301,7 @@ public class PatternDataFieldTest {
 		// test xField
 		Assert.assertFalse(xField.isDisjoint(xField));
 		Assert.assertFalse(xField.isDisjoint(asteriskField));
-		Assert.assertFalse(xField.isDisjoint(intField));
+		Assert.assertFalse(xField.isDisjoint(longField));
 		Assert.assertFalse(xField.isDisjoint(rangeField));
 		Assert.assertFalse(xField.isDisjoint(disjointIntField));
 		Assert.assertFalse(xField.isDisjoint(disjointRangeField));
@@ -310,22 +310,22 @@ public class PatternDataFieldTest {
 	@Test
 	public void testIsMember() throws Exception {
 		
-		PatternDataField intField = new PatternDataField(INT, PatternUsage.GROUP);
+		PatternDataField longField = new PatternDataField(LONG, PatternUsage.GROUP);
 		PatternDataField rangeField = new PatternDataField(RANGE, PatternUsage.GROUP);
 		PatternDataField asteriskField = new PatternDataField(ASTERISK, PatternUsage.GROUP);
 		PatternDataField xField = new PatternDataField(X, PatternUsage.GROUP);
 		
-		int member = Integer.parseInt(INT);
-		int nonMember = HIGH + 100;
+		long member = Long.parseLong(LONG);
+		long nonMember = HIGH + 100;
 		
 		// test with member
-		Assert.assertTrue(intField.isMember(member));
+		Assert.assertTrue(longField.isMember(member));
 		Assert.assertTrue(rangeField.isMember(member));
 		Assert.assertTrue(asteriskField.isMember(member));
 		Assert.assertTrue(xField.isMember(member));
 		
 		// test with non member
-		Assert.assertFalse(intField.isMember(nonMember));
+		Assert.assertFalse(longField.isMember(nonMember));
 		Assert.assertFalse(rangeField.isMember(nonMember));
 		Assert.assertTrue(asteriskField.isMember(nonMember));
 		Assert.assertTrue(xField.isMember(nonMember));
@@ -334,12 +334,12 @@ public class PatternDataFieldTest {
 	@Test
 	public void testToString() throws Exception {
 
-		PatternDataField intField = new PatternDataField(INT, PatternUsage.GROUP);
+		PatternDataField longField = new PatternDataField(LONG, PatternUsage.GROUP);
 		PatternDataField rangeField = new PatternDataField(RANGE, PatternUsage.GROUP);
 		PatternDataField asteriskField = new PatternDataField(ASTERISK, PatternUsage.GROUP);
 		PatternDataField xField = new PatternDataField(X, PatternUsage.GROUP);
 		
-		Assert.assertEquals(INT, intField.toString());
+		Assert.assertEquals(LONG, longField.toString());
 		Assert.assertEquals(RANGE, rangeField.toString());
 		Assert.assertEquals(ASTERISK, asteriskField.toString());
 		Assert.assertEquals(X, xField.toString());

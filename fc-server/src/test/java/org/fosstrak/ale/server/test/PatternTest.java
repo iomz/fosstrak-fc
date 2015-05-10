@@ -63,7 +63,7 @@ public class PatternTest {
 		try {
 			new Pattern(FILTER_PATTERN, PatternUsage.TAG);
 		} catch (ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field '[1-2]'. Only 'int' is allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field '[1-2]'. Only 'long' is allowed.", e.getMessage());
 			return;
 		}
 		
@@ -81,7 +81,7 @@ public class PatternTest {
 		try {
 			new Pattern(GROUP_PATTERN, PatternUsage.FILTER);
 		} catch (ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field 'X'. Only '*', '[lo-hi]' or 'int' are allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field 'X'. Only '*', '[lo-hi]' or 'long' are allowed.", e.getMessage());
 			return;
 		}
 		
@@ -100,7 +100,7 @@ public class PatternTest {
 		try {
 			new Pattern(INVALID_PATTERN, PatternUsage.GROUP);
 		} catch (ECSpecValidationException e) {
-			Assert.assertEquals("Invalid data field 'a'. Only '*', 'X', '[lo-hi]' or 'int' are allowed.", e.getMessage());
+			Assert.assertEquals("Invalid data field 'a'. Only '*', 'X', '[lo-hi]' or 'long' are allowed.", e.getMessage());
 			return;
 		}
 		
