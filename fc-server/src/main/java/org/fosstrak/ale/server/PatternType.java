@@ -40,6 +40,7 @@ public enum PatternType {
 	GRAI_96,
 	SGTIN,
 	SSCC,
+	GRAI,
 	OID,
 	PROP;
 
@@ -51,6 +52,7 @@ public enum PatternType {
 	private static final String GRAI_96_STRING = "grai-96";
 	private static final String SGTIN_STRING = "sgtin";
 	private static final String SSCC_STRING = "sscc";
+	private static final String GRAI_STRING = "grai";
 	private static final String OID_STRING = "oid";
 	private static final String PROP_STRING = "prop";
 	
@@ -62,6 +64,7 @@ public enum PatternType {
 	private static final int GRAI_96_DATAFIELDS = 3;
 	private static final int SGTIN_DATAFIELDS = 3;
 	private static final int SSCC_DATAFIELDS = 2;
+	private static final int GRAI_DATAFIELDS = 3;
 	private static final int OID_DATAFIELDS = 1;
 	private static final int PROP_DATAFIELDS = 1;
 	
@@ -93,6 +96,8 @@ public enum PatternType {
 			return SGTIN;
 		}else if (SSCC_STRING.equals(type)){
 			return SSCC;
+		}else if (GRAI_STRING.equals(type)){
+			return GRAI;
 		}else if (OID_STRING.equals(type)){
 				return OID;
 		}else if (PROP_STRING.equals(type)){
@@ -119,19 +124,21 @@ public enum PatternType {
 			return SSCC_64_DATAFIELDS;
 		} else if (this == SGTIN_96) {
 			return SGTIN_96_DATAFIELDS;
-		}else if (this == SSCC_96) {
+		} else if (this == SSCC_96) {
 			return SSCC_96_DATAFIELDS;
-		}else if (this == GRAI_96) {
+		} else if (this == GRAI_96) {
 			return GRAI_96_DATAFIELDS;
-		}else if (this == SGTIN) {
+		} else if (this == SGTIN) {
 			return SGTIN_DATAFIELDS;
-		}else if (this == SSCC) {
+		} else if (this == SSCC) {
 			return SSCC_DATAFIELDS;
-		}else if (this == OID) {
+		} else if (this == GRAI) {
+			return GRAI_DATAFIELDS;
+		} else if (this == OID) {
 			return OID_DATAFIELDS;
-		}else if (this == PROP) {
+		} else if (this == PROP) {
 			return PROP_DATAFIELDS;
-		}else {
+		} else {
 			return -1;
 		}
 		
@@ -156,6 +163,16 @@ public enum PatternType {
 			return SSCC_96_STRING;
 		} else if (this == GRAI_96) {
 			return GRAI_96_STRING;
+		} else if (this == SGTIN) {
+			return SGTIN_STRING;
+		} else if (this == SSCC) {
+			return SSCC_STRING;
+		} else if (this == GRAI) {
+			return GRAI_STRING;
+		} else if (this == OID) {
+			return OID_STRING;
+		} else if (this == PROP) {
+			return PROP_STRING;
 		} else {
 			return null;
 		}
